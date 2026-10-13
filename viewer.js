@@ -31,8 +31,7 @@
     raw = raw.trim();
     if (!raw) return "kes://home/";
     if (/^[a-z][a-z0-9+.-]*:\/\//i.test(raw)) return raw;
-    if (/[ ./]/.test(raw)) return "kes://search?q=" + queryText(raw);
-    return "kes://" + raw.toLowerCase() + "/";
+    return "kes://search?q=" + queryText(raw);
   }
 
   /* ---- fetching (a changing query string keeps GitHub's cache from serving an old "not found") ---- */
@@ -96,6 +95,10 @@
       var rows = lists[0].filter(function (r) { return lists.slice(1).every(function (l) { return l.some(function (x) { return x.addr === r.addr; }); }); }).slice(0, 10);
       show("Search: " + words.join(" "), url, function (el) {
         var h = document.createElement("h1"); h.textContent = "Search results"; el.appendChild(h);
+        var one = q.indexOf("+") < 0 && /^[A-Za-z0-9]+$/.test(q) ? "kes://" + q.toLowerCase() + "/" : "";
+        if (one && lists[0].some(function (r) { return r.addr.indexOf(one) === 0; })) {
+          var op = document.createElement("p"), oa = document.createElement("a"); oa.href = "#" + one; oa.textContent = "Open the site " + one; op.appendChild(oa); el.appendChild(op);
+        }
         if (!rows.length) { var p = document.createElement("p"); p.textContent = "No pages matched. Try fewer or different words."; el.appendChild(p); }
         rows.forEach(function (r) {
           var d = document.createElement("div"); d.className = "result";
