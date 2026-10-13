@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kestrel Web Viewer</title>
+<meta name="description" content="Browse kes:// websites from the Kestrel web in any browser.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23b45309'/%3E%3Cpath d='M7 22 L16 7 L25 22 L16 18Z' fill='%23fff'/%3E%3C/svg%3E">
+<style>
+:root{--bg:#f7f5f1;--panel:#fff;--ink:#1f1b16;--mute:#6b6258;--line:#e3ddd3;--accent:#b45309;--accent-ink:#fff;--ok:#15803d;--code:#efe9df}
+@media (prefers-color-scheme:dark){:root{--bg:#14110e;--panel:#1d1915;--ink:#f1ece4;--mute:#a69b8d;--line:#322b24;--accent:#f59e0b;--accent-ink:#1a1206;--ok:#4ade80;--code:#2a241d}}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font:16px/1.6 system-ui,-apple-system,"Segoe UI",sans-serif;min-height:100vh;display:flex;flex-direction:column}
+header{position:sticky;top:0;z-index:5;background:var(--panel);border-bottom:1px solid var(--line);padding:10px 16px;display:flex;gap:8px;align-items:center}
+header button{border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:8px;width:38px;height:38px;font-size:18px;cursor:pointer;flex:none}
+header button:disabled{opacity:.35;cursor:default}
+form{flex:1;display:flex;gap:8px;min-width:0}
+#addr{flex:1;min-width:0;height:38px;border:1px solid var(--line);border-radius:8px;padding:0 12px;font:inherit;background:var(--bg);color:var(--ink)}
+#addr:focus{outline:2px solid var(--accent);outline-offset:0}
+form button{width:auto;padding:0 14px;background:var(--accent);color:var(--accent-ink);border-color:var(--accent);font-size:15px;font-weight:600}
+#badge{display:none;font-size:12px;font-weight:700;letter-spacing:.06em;color:var(--ok);border:1px solid var(--ok);border-radius:6px;padding:2px 7px;align-self:center;flex:none}
+main{flex:1;width:100%;max-width:760px;margin:0 auto;padding:28px 16px 64px}
+article{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:24px 22px;overflow-wrap:anywhere}
+article h1{font-size:1.9rem;line-height:1.2;margin:.1em 0 .5em}
+article h2{font-size:1.4rem;margin:1.4em 0 .4em}
+article h3{font-size:1.15rem;margin:1.2em 0 .3em}
+article p{margin:.7em 0}
+article ul,article ol{padding-left:1.4em}
+article a{color:var(--accent);text-underline-offset:3px}
+article code{background:var(--code);border-radius:4px;padding:1px 5px;font-size:.92em}
+article pre{background:var(--code);padding:12px;border-radius:8px;overflow:auto}
+article blockquote{margin:1em 0;padding-left:14px;border-left:3px solid var(--line);color:var(--mute)}
+article hr{border:0;border-top:1px solid var(--line)}
+.blocked{color:var(--mute);text-decoration:line-through;cursor:not-allowed}
+.status{color:var(--mute);font-size:14px;margin:0 0 10px}
+.result{margin:0 0 18px}.result .addr{color:var(--ok);font-size:14px}.result p{margin:.2em 0;color:var(--mute)}
+footer{text-align:center;color:var(--mute);font-size:13px;padding:18px 16px}
+</style>
+</head>
+<body>
+<header>
+  <button id="back" title="Back" aria-label="Back" disabled>&larr;</button>
+  <button id="fwd" title="Forward" aria-label="Forward" disabled>&rarr;</button>
+  <button id="home" title="Home" aria-label="Home">&#8962;</button>
+  <span id="badge">SECURE</span>
+  <form id="f" autocomplete="off">
+    <input id="addr" type="text" inputmode="url" autocapitalize="off" spellcheck="false" placeholder="Type a word to search, or kes://name/" aria-label="Address">
+    <button type="submit">Go</button>
+  </form>
+</header>
+<main><p class="status" id="status"></p><article id="page"></article></main>
+<footer>Kestrel Web Viewer &middot; a read-only window onto the Kestrel web &middot; <a id="src" href="#">source</a></footer>
+<script src="viewer.js"></script>
+</body>
+</html>
